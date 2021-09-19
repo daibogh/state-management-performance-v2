@@ -1,15 +1,15 @@
-import { FC, useCallback, useContext, useMemo, useState } from "react";
-import { useAtom } from "@reatom/react";
-import { listAtom } from "../store/listAtom";
+import React, { useCallback, useContext, useMemo } from "react";
+import { useStore } from "effector-react";
+import { $listStore, setList, updateList } from "../store/listStore";
 import { usePerformanceMeasure } from "../../../hooks/usePerformanceMeasure";
 import { Socket } from "socket.io-client";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { List } from "../../../components/List";
 
-export const ListReatom: FC = () => {
+export const ListEffector: React.FC = () => {
+  const items = useStore($listStore);
   const setMeasure = useContext(MeasureResultContext)[1];
-  const [items, { setList, updateList }] = useAtom(listAtom);
   const { startMark, endMark, collectPerformanceList } = usePerformanceMeasure({
     startMark: "list:update--start",
     endMark: "list:update--end",
@@ -38,7 +38,7 @@ export const ListReatom: FC = () => {
         endMark();
       },
     }),
-    [endMark, setList, startMark, updateList]
+    [endMark, startMark]
   );
   const onCloseSocket = useCallback(() => {
     const res = collectPerformanceList();

@@ -8,6 +8,7 @@ import { ExperimentRedux } from "./containers/ExperimentRedux";
 import { ExperimentMobx } from "./containers/ExperimentMobx";
 import { ExperimentReatom } from "./containers/ExperimentReatom";
 import { MeasureResultProvider } from "./hooks/useMeasureResult";
+import ExperimentEffector from "./containers/ExperimentEffector/ExperimentEffector";
 const mappedFrameworkRoutes = [
   {
     path: generateExperimentPathWithFramework("redux"),
@@ -20,6 +21,10 @@ const mappedFrameworkRoutes = [
   {
     path: generateExperimentPathWithFramework("reatom"),
     Component: ExperimentReatom,
+  },
+  {
+    path: generateExperimentPathWithFramework("effector"),
+    Component: ExperimentEffector,
   },
 ];
 function App() {

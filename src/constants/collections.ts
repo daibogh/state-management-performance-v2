@@ -5,5 +5,6 @@ export const FRAMEWORK_IDS = [
   "reatom",
   "effector",
   "nanostores",
-  "react hooks",
-];
+  "react_state",
+  "react_ref",
+] as const;

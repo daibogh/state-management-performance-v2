@@ -9,7 +9,7 @@ import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 const Pixel: FC<{
   atom: PixelAtom;
 }> = ({ atom }) => {
-  const [backgroundColor] = useAtom(atom);
+  const [{ backgroundColor }] = useAtom(atom);
 
   return <div style={{ width: 1, height: 1, backgroundColor }} />;
 };
@@ -43,11 +43,10 @@ export const MatrixReatom: FC = () => {
         endMark();
       },
     }),
-    [endMark, matrix, setMatrix, startMark]
+    [endMark, setMatrix, startMark, updatePixel]
   );
   const onCloseSocket = useCallback(() => {
     const res = collectPerformanceList();
-    console.log(res);
     setMeasure(res);
   }, [collectPerformanceList, setMeasure]);
   useConfigureExperiment({

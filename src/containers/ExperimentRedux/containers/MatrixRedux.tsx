@@ -52,7 +52,6 @@ export const MatrixRedux: React.FC = () => {
   );
   const onCloseSocket = useCallback(() => {
     const res = collectPerformanceList();
-    console.log(res);
     setMeasure(res);
   }, [collectPerformanceList, setMeasure]);
   useConfigureExperiment({

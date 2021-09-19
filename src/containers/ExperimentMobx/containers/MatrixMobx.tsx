@@ -70,7 +70,6 @@ export const MatrixMobx: FC = observer(() => {
   );
   const onCloseSocket = useCallback(() => {
     const res = collectPerformanceList();
-    console.log(res);
     setMeasure(res);
   }, [collectPerformanceList, setMeasure]);
   useConfigureExperiment({

@@ -1,0 +1,78 @@
+{
+  "name": "state-management-performance-v2",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@reatom/core": "^2.0.0-rc12",
+    "@reatom/react": "^2.0.0-rc4",
+    "@reduxjs/toolkit": "^1.6.1",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^16.9.2",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "bootstrap": "5.1.0",
+    "effector": "^22.1.1",
+    "effector-react": "^22.0.4",
+    "mobx": "^6.3.3",
+    "mobx-react-lite": "^3.2.1",
+    "nanostores": "^0.4.8",
+    "node-sass": "4.14.1",
+    "react": "^17.0.2",
+    "react-bootstrap": "^2.0.0-beta.6",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.5",
+    "react-router-dom": "^5.3.0",
+    "react-scripts": "4.0.3",
+    "react-use": "^17.3.1",
+    "serve": "^12.0.1",
+    "socket.io": "^4.2.0",
+    "socket.io-client": "^4.2.0",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.1.2",
+    "urlon": "^3.1.0",
+    "use-subscription": "^1.5.1",
+    "victory": "^36.0.1",
+    "web-vitals": "^1.0.1"
+  },
+  "scripts": {
+    "start:client": "react-scripts start",
+    "start:client:prod": "serve -s build -l 3000",
+    "start:server": "nodemon server/index.js",
+    "start:server:prod": "node server/index.js",
+    "dev": "concurrently \"yarn start:server\" \"yarn start:client\"",
+    "prod": "concurrently \"yarn build && yarn start:client:prod\" \"yarn start:server:prod\"",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@reatom/debug": "^1.2.0",
+    "@types/react-router-dom": "^5.1.9",
+    "@types/victory": "^33.1.5",
+    "concurrently": "^6.2.1",
+    "nodemon": "^2.0.12",
+    "prettier": "2.4.1",
+    "ts-node-dev": "^1.1.8"
+  }
+}

@@ -8,7 +8,8 @@ export const listAtom = createAtom(
       list = value;
     });
     onAction("updateList", (idx) => {
-      list[idx].width += 5;
+      list[idx] = { ...list[idx], width: list[idx].width + 5 };
+      return list;
     });
     return [...list];
   }

@@ -1,17 +1,17 @@
 import { ComponentProps, FC, useCallback, useContext, useMemo } from "react";
 import { observer } from "mobx-react-lite";
-import { usePerformanceMeasure } from "../../../hooks/usePerformanceMeasure";
 import { StoreContext } from "../store";
 import { Socket } from "socket.io-client";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import { List } from "../../../components/List";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
+import { useMeasureMarks } from "use-measure-marks";
 export const ListMobx: FC = observer(() => {
   const setMeasure = useContext(MeasureResultContext)[1];
   const {
     list: { value: items, setList, updateList },
   } = useContext(StoreContext);
-  const { startMark, endMark, collectPerformanceList } = usePerformanceMeasure({
+  const { startMark, endMark, collectPerformanceList } = useMeasureMarks({
     startMark: "list:update--start",
     endMark: "list:update--end",
     measureMark: "list:re-render",

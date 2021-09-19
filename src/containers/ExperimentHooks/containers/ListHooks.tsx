@@ -1,10 +1,10 @@
 import { FC, useCallback, useContext, useMemo } from "react";
-import { usePerformanceMeasure } from "../../../hooks/usePerformanceMeasure";
 import { Socket } from "socket.io-client";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { List } from "../../../components/List";
 import { useListRef, useListState } from "../store/listHooks";
+import { useMeasureMarks } from "use-measure-marks";
 
 export const ListHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
   const setMeasure = useContext(MeasureResultContext)[1];
@@ -15,7 +15,7 @@ export const ListHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
       return listRef;
     } else return listState;
   }, [isRef, listRef, listState]);
-  const { startMark, endMark, collectPerformanceList } = usePerformanceMeasure({
+  const { startMark, endMark, collectPerformanceList } = useMeasureMarks({
     startMark: "list:update--start",
     endMark: "list:update--end",
     measureMark: "list:re-render",

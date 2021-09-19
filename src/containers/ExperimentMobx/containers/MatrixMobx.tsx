@@ -2,9 +2,9 @@ import { Socket } from "socket.io-client";
 import React, { FC, useCallback, useContext, useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { StoreContext } from "../store";
-import { usePerformanceMeasure } from "../../../hooks/usePerformanceMeasure";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
+import { useMeasureMarks } from "use-measure-marks";
 const Pixel = observer<{ rowIdx: number; columnIdx: number }>(
   ({ rowIdx, columnIdx }) => {
     const {
@@ -40,7 +40,7 @@ export const MatrixMobx: FC = observer(() => {
     []
   );
   const { startMark, endMark, collectPerformanceList } =
-    usePerformanceMeasure(measureProps);
+    useMeasureMarks(measureProps);
   const onOpenSocket = useCallback((socket: Socket) => {
     socket.emit("matrix:get");
   }, []);

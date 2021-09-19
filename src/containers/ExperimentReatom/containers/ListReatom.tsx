@@ -1,16 +1,16 @@
 import { FC, useCallback, useContext, useMemo, useState } from "react";
 import { useAtom } from "@reatom/react";
 import { listAtom } from "../store/listAtom";
-import { usePerformanceMeasure } from "../../../hooks/usePerformanceMeasure";
 import { Socket } from "socket.io-client";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { List } from "../../../components/List";
+import { useMeasureMarks } from "use-measure-marks";
 
 export const ListReatom: FC = () => {
   const setMeasure = useContext(MeasureResultContext)[1];
   const [items, { setList, updateList }] = useAtom(listAtom);
-  const { startMark, endMark, collectPerformanceList } = usePerformanceMeasure({
+  const { startMark, endMark, collectPerformanceList } = useMeasureMarks({
     startMark: "list:update--start",
     endMark: "list:update--end",
     measureMark: "list:re-render",

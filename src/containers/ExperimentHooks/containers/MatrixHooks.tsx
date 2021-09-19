@@ -1,9 +1,9 @@
 import { FC, memo, useCallback, useContext, useMemo } from "react";
-import { usePerformanceMeasure } from "../../../hooks/usePerformanceMeasure";
 import { Socket } from "socket.io-client";
 import { useMatrixRef, useMatrixState } from "../store/matrixHooks";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
+import { useMeasureMarks } from "use-measure-marks";
 
 const Pixel: FC<{
   backgroundColor: string;
@@ -27,7 +27,7 @@ export const MatrixHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
     []
   );
   const { startMark, endMark, collectPerformanceList } =
-    usePerformanceMeasure(measureProps);
+    useMeasureMarks(measureProps);
   const onOpenSocket = useCallback((socket: Socket) => {
     socket.emit("matrix:get");
   }, []);

@@ -1,5 +1,4 @@
 import { FC, useCallback, useContext, useMemo } from "react";
-import { usePerformanceMeasure } from "../../../hooks/usePerformanceMeasure";
 import { Socket } from "socket.io-client";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
@@ -10,6 +9,7 @@ import {
   updateMatrix$,
 } from "../store/matrixStore";
 import { useStore } from "effector-react";
+import { useMeasureMarks } from "use-measure-marks";
 
 const Pixel: FC<{
   store: MatrixElem;
@@ -30,7 +30,7 @@ export const MatrixEffector: FC = () => {
     []
   );
   const { startMark, endMark, collectPerformanceList } =
-    usePerformanceMeasure(measureProps);
+    useMeasureMarks(measureProps);
   const onOpenSocket = useCallback((socket: Socket) => {
     socket.emit("matrix:get");
   }, []);

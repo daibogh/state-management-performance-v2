@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { usePerformanceMeasure } from "../../../hooks/usePerformanceMeasure";
 import { Socket } from "socket.io-client";
 import { setMatrix, updateMatrix } from "../store/slices/matrixSlice";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import { Matrix } from "../../../components/Matrix";
+import { useMeasureMarks } from "use-measure-marks";
 
 export const MatrixRedux: React.FC = () => {
   const setMeasure = useContext(MeasureResultContext)[1];
@@ -20,7 +20,7 @@ export const MatrixRedux: React.FC = () => {
     []
   );
   const { startMark, endMark, collectPerformanceList } =
-    usePerformanceMeasure(measureProps);
+    useMeasureMarks(measureProps);
   const onOpenSocket = useCallback((socket: Socket) => {
     socket.emit("matrix:get");
   }, []);

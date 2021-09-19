@@ -1,10 +1,10 @@
 import { FC, useCallback, useContext, useMemo } from "react";
-import { usePerformanceMeasure } from "../../../hooks/usePerformanceMeasure";
 import { Socket } from "socket.io-client";
 import { useAtom } from "@reatom/react";
 import { matrixAtom, PixelAtom } from "../store/matrixAtom";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
+import { useMeasureMarks } from "use-measure-marks";
 
 const Pixel: FC<{
   atom: PixelAtom;
@@ -25,7 +25,7 @@ export const MatrixReatom: FC = () => {
     []
   );
   const { startMark, endMark, collectPerformanceList } =
-    usePerformanceMeasure(measureProps);
+    useMeasureMarks(measureProps);
   const onOpenSocket = useCallback((socket: Socket) => {
     socket.emit("matrix:get");
   }, []);

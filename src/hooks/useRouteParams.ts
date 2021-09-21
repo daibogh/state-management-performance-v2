@@ -21,3 +21,6 @@ export function useCollectionSize() {
   } = useRouteParams();
   return size || DEFAULT_SIZE;
 }
+export function useIsBackgroundOperation() {
+  return useRouteParams().searchParams.backgroundOp;
+}

@@ -1,4 +1,11 @@
-import { ComponentProps, FC, useCallback, useContext, useMemo } from "react";
+import {
+  ComponentProps,
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+} from "react";
 import { observer } from "mobx-react-lite";
 import { StoreContext } from "../store";
 import { Socket } from "socket.io-client";
@@ -6,11 +13,20 @@ import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import { List } from "../../../components/List";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { useMeasureMarks } from "use-measure-marks";
-import { useCollectionSize } from "../../../hooks/useRouteParams";
+import {
+  useCollectionSize,
+  useIsBackgroundOperation,
+} from "../../../hooks/useRouteParams";
 export const ListMobx: FC = observer(() => {
   const setMeasure = useContext(MeasureResultContext)[1];
   const {
-    list: { value: items, setList, updateList },
+    list: {
+      value: items,
+      setList,
+      updateList,
+      startWithBackground,
+      backgroundOperation,
+    },
   } = useContext(StoreContext);
   const { startMark, endMark, collectPerformanceList } = useMeasureMarks({
     startMark: "list:update--start",
@@ -24,6 +40,19 @@ export const ListMobx: FC = observer(() => {
     },
     [size]
   );
+  const isBackgroundOp = useIsBackgroundOperation();
+  useEffect(() => {
+    let timer: ReturnType<typeof setInterval>;
+    if (isBackgroundOp) {
+      startWithBackground();
+      timer = setInterval(() => {
+        backgroundOperation();
+      }, 500);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [backgroundOperation, isBackgroundOp, startWithBackground]);
   const listeners = useMemo(
     () => ({
       "list:value": (value: number[]) => {

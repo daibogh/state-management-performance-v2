@@ -1,12 +1,21 @@
-import React, { useCallback, useContext, useMemo } from "react";
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import { useStore } from "effector-react";
-import { $listStore, setList, updateList } from "../store/listStore";
+import {
+  $listStore,
+  backgroundEvent$,
+  setList,
+  startWithBackground$,
+  updateList,
+} from "../store/listStore";
 import { Socket } from "socket.io-client";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { List } from "../../../components/List";
 import { useMeasureMarks } from "use-measure-marks";
-import { useCollectionSize } from "../../../hooks/useRouteParams";
+import {
+  useCollectionSize,
+  useIsBackgroundOperation,
+} from "../../../hooks/useRouteParams";
 
 export const ListEffector: React.FC = () => {
   const items = useStore($listStore);
@@ -16,6 +25,19 @@ export const ListEffector: React.FC = () => {
     endMark: "list:update--end",
     measureMark: "list:re-render",
   });
+  const isBackgroundOp = useIsBackgroundOperation();
+  useEffect(() => {
+    let timer: ReturnType<typeof setInterval>;
+    if (isBackgroundOp) {
+      startWithBackground$();
+      timer = setInterval(() => {
+        backgroundEvent$();
+      }, 500);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [isBackgroundOp]);
   const size = useCollectionSize();
   const onOpenSocket = useCallback(
     (socket: Socket) => {

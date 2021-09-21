@@ -1,16 +1,34 @@
-import { FC, useCallback, useContext, useMemo, useState } from "react";
-import { useAtom } from "@reatom/react";
-import { listAtom } from "../store/listAtom";
+import { FC, useCallback, useContext, useEffect, useMemo } from "react";
+import { useAction, useAtom } from "@reatom/react";
+import { listAtom, otherAtom } from "../store/listAtom";
 import { Socket } from "socket.io-client";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { List } from "../../../components/List";
 import { useMeasureMarks } from "use-measure-marks";
-import { useCollectionSize } from "../../../hooks/useRouteParams";
-
+import {
+  useCollectionSize,
+  useIsBackgroundOperation,
+} from "../../../hooks/useRouteParams";
+const { startWithBackground, backgroundOperation } = otherAtom;
 export const ListReatom: FC = () => {
   const setMeasure = useContext(MeasureResultContext)[1];
   const [items, { setList, updateList }] = useAtom(listAtom);
+  const startWithBackgroundAction = useAction(startWithBackground);
+  const backgroundAction = useAction(backgroundOperation);
+  const isBackgroundOp = useIsBackgroundOperation();
+  useEffect(() => {
+    let timer: ReturnType<typeof setInterval>;
+    if (isBackgroundOp) {
+      startWithBackgroundAction();
+      timer = setInterval(() => {
+        backgroundAction();
+      }, 500);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [backgroundAction, isBackgroundOp, startWithBackgroundAction]);
   const { startMark, endMark, collectPerformanceList } = useMeasureMarks({
     startMark: "list:update--start",
     endMark: "list:update--end",

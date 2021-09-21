@@ -61,9 +61,8 @@ export const useMatrixRef = () => {
       backgroundColor: string;
     }) => {
       matrix.current[rowIdx][columnIdx].backgroundColor = backgroundColor;
-      forceRender();
     },
-    [forceRender]
+    []
   );
   return useMemo(
     () => ({ matrix: matrix.current, setMatrix, updateMatrix, _ }),

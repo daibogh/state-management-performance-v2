@@ -4,11 +4,13 @@ import { useBoolean } from "react-use";
 export const useMatrixState = () => {
   const [matrix, _setMatrix] = useState<{ backgroundColor: string }[][]>([]);
   const setMatrix = useCallback(
-    (backgroundColor: string) =>
+    ([backgroundColor, size]: [string, number]) =>
       _setMatrix(
-        new Array(100)
+        new Array(size)
           .fill(null)
-          .map(() => new Array(100).fill(null).map(() => ({ backgroundColor })))
+          .map(() =>
+            new Array(size).fill(null).map(() => ({ backgroundColor }))
+          )
       ),
     []
   );
@@ -42,10 +44,10 @@ export const useMatrixRef = () => {
   const matrix = useRef<{ backgroundColor: string }[][]>([]);
   const [_, forceRender] = useBoolean(false);
   const setMatrix = useCallback(
-    (backgroundColor: string) => {
-      matrix.current = new Array(100)
+    ([backgroundColor, size]: [string, number]) => {
+      matrix.current = new Array(size)
         .fill(null)
-        .map(() => new Array(100).fill(null).map(() => ({ backgroundColor })));
+        .map(() => new Array(size).fill(null).map(() => ({ backgroundColor })));
       forceRender();
     },
     [forceRender]

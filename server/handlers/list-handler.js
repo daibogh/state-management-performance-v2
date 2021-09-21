@@ -1,8 +1,8 @@
 const timers = {};
 module.exports = (io, socket) => {
   // обрабатываем запрос на получение сообщений
-  const getList = () => {
-    const lst = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const getList = (size) => {
+    const lst = new Array(size).fill(0);
     let idx = 0;
     const timer = setInterval(() => {
       const rndIndex = idx % lst.length;

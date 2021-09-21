@@ -5,6 +5,8 @@ import { StoreContext } from "../store";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { useMeasureMarks } from "use-measure-marks";
+import { useCollectionSize } from "../../../hooks/useRouteParams";
+import { Matrix } from "../../../components/Matrix";
 const Pixel = observer<{ rowIdx: number; columnIdx: number }>(
   ({ rowIdx, columnIdx }) => {
     const {
@@ -41,17 +43,21 @@ export const MatrixMobx: FC = observer(() => {
   );
   const { startMark, endMark, collectPerformanceList } =
     useMeasureMarks(measureProps);
-  const onOpenSocket = useCallback((socket: Socket) => {
-    socket.emit("matrix:get");
-  }, []);
+  const size = useCollectionSize();
+  const onOpenSocket = useCallback(
+    (socket: Socket) => {
+      socket.emit("matrix:get", size);
+    },
+    [size]
+  );
   const listeners = useMemo(
     () => ({
-      "matrix:value": (value: string) => {
+      "matrix:value": ([backgroundColor, size]: [string, number]) => {
         setMatrix(
-          new Array(100).fill(null).map((e, i) => {
-            return new Array(100).fill(null).map(() => {
+          new Array(size).fill(null).map((e, i) => {
+            return new Array(size).fill(null).map(() => {
               return {
-                backgroundColor: value, //genColor(),
+                backgroundColor, //genColor(),
               };
             });
           })
@@ -80,23 +86,16 @@ export const MatrixMobx: FC = observer(() => {
     },
   });
   return (
-    <div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${matrix.length}, 1px)`,
-        }}
-      >
-        {matrix.map((row, rowIdx) =>
-          row.map((elem, columnIdx) => (
-            <Pixel
-              key={`row=${rowIdx}-column=${columnIdx}`}
-              rowIdx={rowIdx}
-              columnIdx={columnIdx}
-            />
-          ))
-        )}
-      </div>
-    </div>
+    <Matrix>
+      {matrix.map((row, rowIdx) =>
+        row.map((elem, columnIdx) => (
+          <Pixel
+            key={`row=${rowIdx}-column=${columnIdx}`}
+            rowIdx={rowIdx}
+            columnIdx={columnIdx}
+          />
+        ))
+      )}
+    </Matrix>
   );
 });

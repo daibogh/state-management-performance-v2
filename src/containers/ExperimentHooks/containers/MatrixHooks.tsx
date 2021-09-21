@@ -4,6 +4,8 @@ import { useMatrixRef, useMatrixState } from "../store/matrixHooks";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import { useMeasureMarks } from "use-measure-marks";
+import { useCollectionSize } from "../../../hooks/useRouteParams";
+import { Matrix } from "../../../components/Matrix";
 
 const Pixel: FC<{
   backgroundColor: string;
@@ -28,13 +30,17 @@ export const MatrixHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
   );
   const { startMark, endMark, collectPerformanceList } =
     useMeasureMarks(measureProps);
-  const onOpenSocket = useCallback((socket: Socket) => {
-    socket.emit("matrix:get");
-  }, []);
+  const size = useCollectionSize();
+  const onOpenSocket = useCallback(
+    (socket: Socket) => {
+      socket.emit("matrix:get", size);
+    },
+    [size]
+  );
   const listeners = useMemo(
     () => ({
-      "matrix:value": (value: string) => {
-        setMatrix(value);
+      "matrix:value": (props: [string, number]) => {
+        setMatrix(props);
       },
       "matrix:update": (value: {
         position: [number, number];
@@ -59,22 +65,15 @@ export const MatrixHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
     },
   });
   return (
-    <div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${matrix.length}, 1px)`,
-        }}
-      >
-        {matrix.map((row, rowIdx) =>
-          row.map(({ backgroundColor }, columnIdx) => (
-            <Pixel
-              key={`row=${rowIdx}-column=${columnIdx}`}
-              backgroundColor={backgroundColor}
-            />
-          ))
-        )}
-      </div>
-    </div>
+    <Matrix>
+      {matrix.map((row, rowIdx) =>
+        row.map(({ backgroundColor }, columnIdx) => (
+          <Pixel
+            key={`row=${rowIdx}-column=${columnIdx}`}
+            backgroundColor={backgroundColor}
+          />
+        ))
+      )}
+    </Matrix>
   );
 };

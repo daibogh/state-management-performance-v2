@@ -6,6 +6,7 @@ import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import { Matrix } from "../../../components/Matrix";
 import { useMeasureMarks } from "use-measure-marks";
+import { useCollectionSize } from "../../../hooks/useRouteParams";
 
 export const MatrixRedux: React.FC = () => {
   const setMeasure = useContext(MeasureResultContext)[1];
@@ -21,16 +22,20 @@ export const MatrixRedux: React.FC = () => {
   );
   const { startMark, endMark, collectPerformanceList } =
     useMeasureMarks(measureProps);
-  const onOpenSocket = useCallback((socket: Socket) => {
-    socket.emit("matrix:get");
-  }, []);
+  const size = useCollectionSize();
+  const onOpenSocket = useCallback(
+    (socket: Socket) => {
+      socket.emit("matrix:get", size);
+    },
+    [size]
+  );
   const listeners = useMemo(
     () => ({
-      "matrix:value": (value: string) => {
+      "matrix:value": ([value, size]: [string, number]) => {
         dispatch(
           setMatrix(
-            new Array(100).fill(null).map((e, i) => {
-              return new Array(100).fill(null).map(() => {
+            new Array(size).fill(null).map((e, i) => {
+              return new Array(size).fill(null).map(() => {
                 return {
                   backgroundColor: value, //genColor(),
                 };

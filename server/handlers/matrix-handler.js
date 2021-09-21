@@ -1,12 +1,11 @@
 const timers = {};
-const length = 100;
 const genColor = () =>
   `rgb(${Math.floor(Math.random() * 255)},${Math.floor(
     Math.random() * 255
   )},${Math.floor(Math.random() * 255)})`;
 module.exports = (io, socket) => {
   // обрабатываем запрос на получение сообщений
-  const getMatrix = () => {
+  const getMatrix = (size) => {
     let rowIdx = 0;
     let colIdx = 0;
     let counter = 0;
@@ -14,8 +13,8 @@ module.exports = (io, socket) => {
       if (counter >= 20) {
         clearInterval(timer);
       }
-      rowIdx = Math.floor(Math.random() * 100);
-      colIdx = Math.floor(Math.random() * 100);
+      rowIdx = Math.floor(Math.random() * size);
+      colIdx = Math.floor(Math.random() * size);
 
       socket.emit("matrix:update", {
         position: [rowIdx, colIdx],
@@ -30,7 +29,7 @@ module.exports = (io, socket) => {
         timers[socket.roomId] = undefined;
       }
     });
-    socket.emit("matrix:value", "rgb(255,255,255)");
+    socket.emit("matrix:value", ["rgb(255,255,255)", size]);
   };
 
   // регистрируем обработчики

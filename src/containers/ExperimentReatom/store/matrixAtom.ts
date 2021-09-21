@@ -18,11 +18,11 @@ function createPixelAtom(value: string) {
 export type PixelAtom = ReturnType<typeof createPixelAtom>;
 export const matrixAtom = createAtom(
   {
-    setValue: (value: string) =>
-      new Array(100)
+    setValue: ([value, size]: [string, number]) =>
+      new Array(size)
         .fill(null)
         .map(() =>
-          new Array(100).fill(null).map(() => createPixelAtom(value))
+          new Array(size).fill(null).map(() => createPixelAtom(value))
         ) as PixelAtom[][],
     updatePixel: (value: {
       position: [number, number];

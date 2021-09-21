@@ -5,6 +5,7 @@ import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { List } from "../../../components/List";
 import { useListRef, useListState } from "../store/listHooks";
 import { useMeasureMarks } from "use-measure-marks";
+import { useCollectionSize } from "../../../hooks/useRouteParams";
 
 export const ListHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
   const setMeasure = useContext(MeasureResultContext)[1];
@@ -20,9 +21,13 @@ export const ListHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
     endMark: "list:update--end",
     measureMark: "list:re-render",
   });
-  const onOpenSocket = useCallback((socket: Socket) => {
-    socket.emit("list:get");
-  }, []);
+  const size = useCollectionSize();
+  const onOpenSocket = useCallback(
+    (socket: Socket) => {
+      socket.emit("list:get", size);
+    },
+    [size]
+  );
   const listeners = useMemo(
     () => ({
       "list:value": (value: number[]) => {

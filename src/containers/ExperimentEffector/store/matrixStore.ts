@@ -1,7 +1,7 @@
 import { createEvent, createStore } from "effector";
 
 export const setMatrix$ =
-  createEvent<{ backgroundColor: string }>("setMatrixValue");
+  createEvent<{ backgroundColor: string; size: number }>("setMatrixValue");
 export const updateMatrix$ =
   createEvent<{ position: [number, number]; backgroundColor: string }>(
     "setMatrixValue"
@@ -18,14 +18,14 @@ const getPixelStore = (
 };
 export type MatrixElem = ReturnType<typeof getPixelStore>;
 export const $matrixStore = createStore<MatrixElem[][]>([])
-  .on(setMatrix$, (_, value) =>
-    new Array(100)
+  .on(setMatrix$, (_, { backgroundColor, size }) =>
+    new Array(size)
       .fill(null)
       .map((_, rowIdx) =>
-        new Array(100)
+        new Array(size)
           .fill(null)
           .map((_, columnIdx) =>
-            getPixelStore(`row#${rowIdx};col${columnIdx}`, value)
+            getPixelStore(`row#${rowIdx};col${columnIdx}`, { backgroundColor })
           )
       )
   )

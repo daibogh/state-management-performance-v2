@@ -5,6 +5,8 @@ import { matrixAtom, PixelAtom } from "../store/matrixAtom";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import { useMeasureMarks } from "use-measure-marks";
+import { useCollectionSize } from "../../../hooks/useRouteParams";
+import Matrix from "../../../components/Matrix/Matrix";
 
 const Pixel: FC<{
   atom: PixelAtom;
@@ -26,13 +28,17 @@ export const MatrixReatom: FC = () => {
   );
   const { startMark, endMark, collectPerformanceList } =
     useMeasureMarks(measureProps);
-  const onOpenSocket = useCallback((socket: Socket) => {
-    socket.emit("matrix:get");
-  }, []);
+  const size = useCollectionSize();
+  const onOpenSocket = useCallback(
+    (socket: Socket) => {
+      socket.emit("matrix:get", size);
+    },
+    [size]
+  );
   const listeners = useMemo(
     () => ({
-      "matrix:value": (value: string) => {
-        setMatrix(value);
+      "matrix:value": (props: [string, number]) => {
+        setMatrix(props);
       },
       "matrix:update": (value: {
         position: [number, number];
@@ -57,19 +63,12 @@ export const MatrixReatom: FC = () => {
     },
   });
   return (
-    <div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${matrix.length}, 1px)`,
-        }}
-      >
-        {matrix.map((row, rowIdx) =>
-          row.map((atom, columnIdx) => (
-            <Pixel key={`row=${rowIdx}-column=${columnIdx}`} atom={atom} />
-          ))
-        )}
-      </div>
-    </div>
+    <Matrix>
+      {matrix.map((row, rowIdx) =>
+        row.map((atom, columnIdx) => (
+          <Pixel key={`row=${rowIdx}-column=${columnIdx}`} atom={atom} />
+        ))
+      )}
+    </Matrix>
   );
 };

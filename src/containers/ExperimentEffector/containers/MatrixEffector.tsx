@@ -10,6 +10,8 @@ import {
 } from "../store/matrixStore";
 import { useStore } from "effector-react";
 import { useMeasureMarks } from "use-measure-marks";
+import { useCollectionSize } from "../../../hooks/useRouteParams";
+import { Matrix } from "../../../components/Matrix";
 
 const Pixel: FC<{
   store: MatrixElem;
@@ -21,6 +23,7 @@ const Pixel: FC<{
 export const MatrixEffector: FC = () => {
   const setMeasure = useContext(MeasureResultContext)[1];
   const matrix = useStore($matrixStore);
+
   const measureProps = useMemo(
     () => ({
       startMark: "matrix:update--start",
@@ -31,13 +34,17 @@ export const MatrixEffector: FC = () => {
   );
   const { startMark, endMark, collectPerformanceList } =
     useMeasureMarks(measureProps);
-  const onOpenSocket = useCallback((socket: Socket) => {
-    socket.emit("matrix:get");
-  }, []);
+  const size = useCollectionSize();
+  const onOpenSocket = useCallback(
+    (socket: Socket) => {
+      socket.emit("matrix:get", size);
+    },
+    [size]
+  );
   const listeners = useMemo(
     () => ({
-      "matrix:value": (value: string) => {
-        setMatrix$({ backgroundColor: value });
+      "matrix:value": ([value, size]: [string, number]) => {
+        setMatrix$({ backgroundColor: value, size });
       },
       "matrix:update": (value: {
         position: [number, number];
@@ -62,19 +69,12 @@ export const MatrixEffector: FC = () => {
     },
   });
   return (
-    <div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${matrix.length}, 1px)`,
-        }}
-      >
-        {matrix.map((row, rowIdx) =>
-          row.map((store, columnIdx) => (
-            <Pixel key={`row=${rowIdx}-column=${columnIdx}`} store={store} />
-          ))
-        )}
-      </div>
-    </div>
+    <Matrix>
+      {matrix.map((row, rowIdx) =>
+        row.map((store, columnIdx) => (
+          <Pixel key={`row=${rowIdx}-column=${columnIdx}`} store={store} />
+        ))
+      )}
+    </Matrix>
   );
 };

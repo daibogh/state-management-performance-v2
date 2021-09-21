@@ -1,27 +1,30 @@
 import React from "react";
+import { useCollectionSize } from "../../hooks/useRouteParams";
 type Props = {
-  matrix: { backgroundColor: string }[][];
+  matrix?: { backgroundColor: string }[][];
 };
-const Matrix: React.FC<Props> = ({ matrix }) => {
+const Matrix: React.FC<Props> = ({ matrix, children }) => {
+  const size = useCollectionSize();
   return (
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: `repeat(${matrix.length}, 1px)`,
+        gridTemplateColumns: `repeat(${size}, 1px)`,
       }}
     >
-      {matrix.map((row, rowIdx) =>
-        row.map((elem, columnIdx) => (
-          <div
-            key={`row=${rowIdx}-column=${columnIdx}`}
-            style={{
-              width: 1,
-              height: 1,
-              backgroundColor: elem.backgroundColor,
-            }}
-          />
-        ))
-      )}
+      {children ||
+        matrix?.map((row, rowIdx) =>
+          row.map((elem, columnIdx) => (
+            <div
+              key={`row=${rowIdx}-column=${columnIdx}`}
+              style={{
+                width: 1,
+                height: 1,
+                backgroundColor: elem.backgroundColor,
+              }}
+            />
+          ))
+        )}
     </div>
   );
 };

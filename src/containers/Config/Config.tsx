@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useMemo } from "react";
-import { Button, Dropdown, Form } from "react-bootstrap";
+import { Button, Col, Container, Dropdown, Form, Row } from "react-bootstrap";
 import { useRouteParams } from "../../hooks/useRouteParams";
 import { generateUrlonPath } from "../../utils/generateUrlonPath";
 import { useHistory } from "react-router-dom";
@@ -9,7 +9,9 @@ import { SocketConnectionContext } from "../../hooks/useSocketConnection";
 import { DEFAULT_SIZE } from "../../constants/params";
 
 const Config: React.FC = () => {
-  const { startSocket, stopSocket } = useContext(SocketConnectionContext);
+  const { startSocket, stopSocket, isActive } = useContext(
+    SocketConnectionContext
+  );
   const params = useRouteParams();
   const { experimentId, frameworkId } = params.urlParams;
   const { size, backgroundOp } = params.searchParams;
@@ -90,16 +92,20 @@ const Config: React.FC = () => {
           </Dropdown.Menu>
         </Dropdown>
       </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label htmlFor="collectionSize">Choose collection size</Form.Label>
-        <Form.Range
-          id="collectionSize"
-          min={20}
-          max={400}
-          onChange={onRangeChange}
-          value={size || DEFAULT_SIZE}
-        />
-      </Form.Group>
+      {!!experimentId && (
+        <Form.Group className="mb-3">
+          <Form.Label htmlFor="collectionSize">
+            Choose collection size (current: <b>{size || DEFAULT_SIZE}</b>)
+          </Form.Label>
+          <Form.Range
+            id="collectionSize"
+            min={20}
+            max={400}
+            onChange={onRangeChange}
+            value={size || DEFAULT_SIZE}
+          />
+        </Form.Group>
+      )}
       {experimentId === "list" && (
         <Form.Group className="mb-3">
           <Form.Check
@@ -129,13 +135,29 @@ const Config: React.FC = () => {
           </Dropdown>
         </Form.Group>
       )}
-
-      <Button variant="primary" type="button" onClick={startSocket}>
-        START
-      </Button>
-      <Button variant="primary" type="button" onClick={stopSocket}>
-        STOP
-      </Button>
+      {experimentId && frameworkId && (
+        <>
+          {!isActive ? (
+            <Button
+              size="lg"
+              variant="primary"
+              type="button"
+              onClick={startSocket}
+            >
+              START
+            </Button>
+          ) : (
+            <Button
+              size="lg"
+              variant="danger"
+              type="button"
+              onClick={stopSocket}
+            >
+              STOP
+            </Button>
+          )}
+        </>
+      )}
     </Form>
   );
 };

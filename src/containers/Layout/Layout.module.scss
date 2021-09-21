@@ -4,6 +4,10 @@
 
 .alignVertical {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   min-height: 600px;
+  justify-content: center;
+}
+.alignToTop {
+  align-items: flex-start;
 }

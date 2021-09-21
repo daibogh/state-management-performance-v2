@@ -5,11 +5,14 @@ type Props = {
 };
 const Matrix: React.FC<Props> = ({ matrix, children }) => {
   const size = useCollectionSize();
+  if (!((children || matrix) as unknown[])?.length) return null;
   return (
     <div
       style={{
         display: "grid",
         gridTemplateColumns: `repeat(${size}, 1px)`,
+        backgroundColor: "#f7f8fa",
+        border: "1px solid #d4d6da",
       }}
     >
       {children ||

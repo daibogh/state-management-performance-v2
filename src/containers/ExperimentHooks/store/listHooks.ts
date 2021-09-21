@@ -1,5 +1,7 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useBoolean } from "react-use";
+import { BIG_COLLECTION } from "../../../constants/collections";
+import { useIsBackgroundOperation } from "../../../hooks/useRouteParams";
 
 type ListItem = { width: number; backgroundColor: string };
 export const useListState = () => {
@@ -34,4 +36,36 @@ export const useListRef = () => {
     () => ({ list: list.current, setList, updateList, _ }),
     [setList, updateList, _]
   );
+};
+export const useOtherListState = () => {
+  const isBackgroundOp = useIsBackgroundOperation();
+  const [state, setState] = useState<number[]>([]);
+  useEffect(() => {
+    let timer: ReturnType<typeof setInterval>;
+    if (isBackgroundOp) {
+      setState(BIG_COLLECTION);
+      timer = setInterval(() => {
+        setState((arr) => [...arr, 0]);
+      }, 500);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [isBackgroundOp]);
+};
+export const useOtherListRef = () => {
+  const isBackgroundOp = useIsBackgroundOperation();
+  const list = useRef<number[]>([]);
+  useEffect(() => {
+    let timer: ReturnType<typeof setInterval>;
+    if (isBackgroundOp) {
+      list.current = BIG_COLLECTION;
+      timer = setInterval(() => {
+        list.current.push(0);
+      }, 500);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [isBackgroundOp]);
 };

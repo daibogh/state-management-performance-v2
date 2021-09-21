@@ -1,4 +1,5 @@
 import { createStore, createEvent } from "effector";
+import { BIG_COLLECTION } from "../../../constants/collections";
 
 export const setList =
   createEvent<{ width: number; backgroundColor: string }[]>("setList");
@@ -12,3 +13,8 @@ export const $listStore = createStore<
       idx === _idx ? { ...props, width: props.width + 5 } : props
     )
   );
+export const startWithBackground$ = createEvent();
+export const backgroundEvent$ = createEvent();
+const $otherListStore = createStore<number[]>([])
+  .on(backgroundEvent$, (state) => [...state, 0])
+  .on(startWithBackground$, () => BIG_COLLECTION);

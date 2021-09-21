@@ -1,24 +1,29 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
+import { BIG_COLLECTION } from "../../../../constants/collections";
 
 export const listSlice = createSlice({
-  name: 'list',
+  name: "list",
   initialState: {
-    value: [] as {width: number; backgroundColor: string}[],
+    value: [] as { width: number; backgroundColor: string }[],
     isActiveConnection: false,
+    otherList: [] as number[],
   },
   reducers: {
     set: (state, action) => {
       state.value = action.payload;
     },
-    update: (state, action: {payload: [number]}) => {
+    update: (state, action: { payload: [number] }) => {
       const [index] = action.payload;
       if (state.value[index].width < 100) state.value[index].width += 5;
     },
-    stop: state => {
+    stop: (state) => {
       state.isActiveConnection = false;
     },
-    start: state => {
-      state.isActiveConnection = true;
+    startWithBackground: (state) => {
+      state.otherList = BIG_COLLECTION;
+    },
+    backgroundOperation: (state) => {
+      state.otherList.push(0);
     },
   },
 });
@@ -28,7 +33,8 @@ export const {
   set: setList,
   update: updateList,
   stop: stopFetching,
-  start: startFetching,
+  startWithBackground,
+  backgroundOperation,
 } = listSlice.actions;
 
 export default listSlice.reducer;

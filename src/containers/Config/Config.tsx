@@ -12,7 +12,7 @@ const Config: React.FC = () => {
   const { startSocket, stopSocket } = useContext(SocketConnectionContext);
   const params = useRouteParams();
   const { experimentId, frameworkId } = params.urlParams;
-  const { size } = params.searchParams;
+  const { size, backgroundOp } = params.searchParams;
   const history = useHistory();
   const experimentOptions = useMemo(() => {
     return EXPERIMENT_IDS.map((experimentId) => ({
@@ -55,6 +55,23 @@ const Config: React.FC = () => {
     },
     [frameworkId, history, params.searchParams, params.urlParams]
   );
+  const onBackgroundOperationToggle = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      history.push(
+        generateUrlonPath(EXPERIMENT_PATH, {
+          routeParams: {
+            ...params.urlParams,
+            frameworkId,
+          },
+          queryParams: {
+            ...params.searchParams,
+            backgroundOp: e.target.checked,
+          },
+        })
+      );
+    },
+    [frameworkId, history, params.searchParams, params.urlParams]
+  );
   return (
     <Form>
       <Form.Group className="mb-3">
@@ -83,6 +100,17 @@ const Config: React.FC = () => {
           value={size || DEFAULT_SIZE}
         />
       </Form.Group>
+      {experimentId === "list" && (
+        <Form.Group className="mb-3">
+          <Form.Check
+            type="switch"
+            id="backgroundOp"
+            label="use background operation"
+            checked={backgroundOp}
+            onChange={onBackgroundOperationToggle}
+          />
+        </Form.Group>
+      )}
       {frameworkOptions && (
         <Form.Group className="mb-3">
           <Form.Label>Choose framework to test</Form.Label>

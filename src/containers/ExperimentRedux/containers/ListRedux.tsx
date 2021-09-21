@@ -1,12 +1,20 @@
-import React, { useCallback, useContext, useMemo } from "react";
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { setList, updateList } from "../store/slices/listSlice";
+import {
+  backgroundOperation,
+  setList,
+  startWithBackground,
+  updateList,
+} from "../store/slices/listSlice";
 import { Socket } from "socket.io-client";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import { List } from "../../../components/List";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { useMeasureMarks } from "use-measure-marks";
-import { useCollectionSize } from "../../../hooks/useRouteParams";
+import {
+  useCollectionSize,
+  useIsBackgroundOperation,
+} from "../../../hooks/useRouteParams";
 
 export const ListRedux: React.FC = () => {
   const setMeasure = useContext(MeasureResultContext)[1];
@@ -18,6 +26,19 @@ export const ListRedux: React.FC = () => {
     measureMark: "list:re-render",
   });
   const size = useCollectionSize();
+  const isBackgroundOp = useIsBackgroundOperation();
+  useEffect(() => {
+    let timer: ReturnType<typeof setInterval>;
+    if (isBackgroundOp) {
+      dispatch(startWithBackground());
+      timer = setInterval(() => {
+        dispatch(backgroundOperation());
+      }, 500);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [dispatch, isBackgroundOp]);
   const onOpenSocket = useCallback(
     (socket: Socket) => {
       socket.emit("list:get", size);

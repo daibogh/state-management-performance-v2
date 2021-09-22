@@ -21,9 +21,9 @@ export const ListEffector: React.FC = () => {
   const items = useStore($listStore);
   const setMeasure = useContext(MeasureResultContext)[1];
   const { startMark, endMark, collectPerformanceList } = useMeasureMarks({
-    startMark: "list:update--start",
-    endMark: "list:update--end",
-    measureMark: "list:re-render",
+    startMark: "effector:list:update--start",
+    endMark: "effector:list:update--end",
+    measureMark: "effector:list:re-render",
   });
   const isBackgroundOp = useIsBackgroundOperation();
   useEffect(() => {

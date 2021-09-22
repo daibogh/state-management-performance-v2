@@ -1,30 +1,54 @@
-import React, {FC} from 'react';
+import React, { FC, useMemo } from "react";
 import {
   VictoryChart,
   VictoryTooltip,
   VictoryScatter,
   VictoryTheme,
   VictoryAxis,
-} from 'victory';
-const PerformanceChart: FC<any> = ({data}: any) => {
+} from "victory";
+const PerformanceChart: FC<any> = ({
+  data,
+}: {
+  data: PerformanceMeasure[];
+}) => {
+  const normalizedData = useMemo(
+    () =>
+      !data?.length
+        ? []
+        : data.map(({ name, duration, detail, startTime, entryType }) => ({
+            name,
+            duration,
+            detail,
+            entryType,
+            startTime: startTime - data[0].startTime,
+          })),
+    [data]
+  );
+  console.log({ data, normalizedData });
   return (
-    <div style={{width: 600, height: 600}}>
+    <div style={{ width: 600, height: 600 }}>
       <VictoryChart
         theme={VictoryTheme.material}
-        domain={{x: [0, 100000], y: [0, 10000]}}
+        domain={{ x: [0, 100000], y: [0, 10000] }}
       >
         <VictoryScatter
           labelComponent={<VictoryTooltip />}
           style={{
-            data: {stroke: '#c43a31'},
-            parent: {border: '1px solid #ccc'},
+            data: { stroke: "#c43a31" },
+            parent: { border: "1px solid #ccc" },
           }}
-          data={data.map(
-            ({startTime, duration}: {startTime: number; duration: number}) => ({
+          data={normalizedData.map(
+            ({
+              startTime,
+              duration,
+            }: {
+              startTime: number;
+              duration: number;
+            }) => ({
               x: startTime,
               y: duration,
               label: `duration: ${duration.toFixed(3)}ms`,
-            }),
+            })
           )}
           // x="startTime"
           // y="duration"
@@ -32,14 +56,14 @@ const PerformanceChart: FC<any> = ({data}: any) => {
         <VictoryAxis
           label="start time (ms)"
           style={{
-            axisLabel: {padding: 30},
+            axisLabel: { padding: 30 },
           }}
         />
         <VictoryAxis
           dependentAxis
           label="duration (ms)"
           style={{
-            axisLabel: {padding: 40},
+            axisLabel: { padding: 40 },
           }}
         />
       </VictoryChart>

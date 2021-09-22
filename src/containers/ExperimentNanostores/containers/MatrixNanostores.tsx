@@ -26,9 +26,9 @@ export const MatrixNanostores: FC = () => {
 
   const measureProps = useMemo(
     () => ({
-      startMark: "matrix:update--start",
-      endMark: "matrix:update--end",
-      measureMark: "matrix:re-render",
+      startMark: "nanostores:matrix:update--start",
+      endMark: "nanostores:matrix:update--end",
+      measureMark: "nanostores:matrix:re-render",
     }),
     []
   );

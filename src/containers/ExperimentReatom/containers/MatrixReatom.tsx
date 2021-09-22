@@ -20,9 +20,9 @@ export const MatrixReatom: FC = () => {
   const [matrix, { setValue: setMatrix, updatePixel }] = useAtom(matrixAtom);
   const measureProps = useMemo(
     () => ({
-      startMark: "matrix:update--start",
-      endMark: "matrix:update--end",
-      measureMark: "matrix:re-render",
+      startMark: "reatom:matrix:update--start",
+      endMark: "reatom:matrix:update--end",
+      measureMark: "reatom:matrix:re-render",
     }),
     []
   );

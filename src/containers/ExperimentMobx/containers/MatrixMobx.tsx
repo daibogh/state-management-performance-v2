@@ -35,9 +35,9 @@ export const MatrixMobx: FC = observer(() => {
 
   const measureProps = useMemo(
     () => ({
-      startMark: "matrix:update--start",
-      endMark: "matrix:update--end",
-      measureMark: "matrix:re-render",
+      startMark: "mobx:matrix:update--start",
+      endMark: "mobx:matrix:update--end",
+      measureMark: "mobx:matrix:re-render",
     }),
     []
   );

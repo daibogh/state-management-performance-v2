@@ -14,9 +14,9 @@ export const MatrixRedux: React.FC = () => {
   const dispatch = useAppDispatch();
   const measureProps = useMemo(
     () => ({
-      startMark: "matrix:update--start",
-      endMark: "matrix:update--end",
-      measureMark: "matrix:re-render",
+      startMark: "redux:matrix:update--start",
+      endMark: "redux:matrix:update--end",
+      measureMark: "redux:matrix:re-render",
     }),
     []
   );

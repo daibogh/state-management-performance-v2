@@ -24,9 +24,9 @@ export const ListHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
     } else return listState;
   }, [isRef, listRef, listState]);
   const { startMark, endMark, collectPerformanceList } = useMeasureMarks({
-    startMark: "list:update--start",
-    endMark: "list:update--end",
-    measureMark: "list:re-render",
+    startMark: `${isRef ? "react-ref" : "react-state"}:list:update--start`,
+    endMark: `${isRef ? "react-ref" : "react-state"}:list:update--end`,
+    measureMark: `${isRef ? "react-ref" : "react-state"}:list:re-render`,
   });
   const size = useCollectionSize();
   const onOpenSocket = useCallback(

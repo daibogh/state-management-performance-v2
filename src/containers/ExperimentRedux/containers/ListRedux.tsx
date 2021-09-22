@@ -22,9 +22,9 @@ export const ListRedux: React.FC = () => {
   const items = useAppSelector((store) => store.list.value);
   const dispatch = useAppDispatch();
   const { startMark, endMark, collectPerformanceList } = useMeasureMarks({
-    startMark: "list:update--start",
-    endMark: "list:update--end",
-    measureMark: "list:re-render",
+    startMark: "redux:list:update--start",
+    endMark: "redux:list:update--end",
+    measureMark: "redux:list:re-render",
   });
   const size = useCollectionSize();
   const isBackgroundOp = useIsBackgroundOperation();

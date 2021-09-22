@@ -29,9 +29,9 @@ export const ListMobx: FC = observer(() => {
     },
   } = useContext(StoreContext);
   const { startMark, endMark, collectPerformanceList } = useMeasureMarks({
-    startMark: "list:update--start",
-    endMark: "list:update--end",
-    measureMark: "list:re-render",
+    startMark: "mobx:list:update--start",
+    endMark: "mobx:list:update--end",
+    measureMark: "mobx:list:re-render",
   });
   const size = useCollectionSize();
   const onOpenSocket = useCallback(

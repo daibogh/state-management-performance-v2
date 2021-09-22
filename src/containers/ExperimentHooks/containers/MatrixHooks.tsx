@@ -22,11 +22,11 @@ export const MatrixHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
   );
   const measureProps = useMemo(
     () => ({
-      startMark: "matrix:update--start",
-      endMark: "matrix:update--end",
-      measureMark: "matrix:re-render",
+      startMark: `${isRef ? "react-ref" : "react-state"}:matrix:update--start`,
+      endMark: `${isRef ? "react-ref" : "react-state"}:matrix:update--end`,
+      measureMark: `${isRef ? "react-ref" : "react-state"}:matrix:re-render`,
     }),
-    []
+    [isRef]
   );
   const { startMark, endMark, collectPerformanceList } =
     useMeasureMarks(measureProps);

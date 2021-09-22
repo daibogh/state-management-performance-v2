@@ -26,9 +26,9 @@ export const MatrixEffector: FC = () => {
 
   const measureProps = useMemo(
     () => ({
-      startMark: "matrix:update--start",
-      endMark: "matrix:update--end",
-      measureMark: "matrix:re-render",
+      startMark: "effector:matrix:update--start",
+      endMark: "effector:matrix:update--end",
+      measureMark: "effector:matrix:re-render",
     }),
     []
   );

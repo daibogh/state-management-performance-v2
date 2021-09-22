@@ -30,9 +30,9 @@ export const ListReatom: FC = () => {
     };
   }, [backgroundAction, isBackgroundOp, startWithBackgroundAction]);
   const { startMark, endMark, collectPerformanceList } = useMeasureMarks({
-    startMark: "list:update--start",
-    endMark: "list:update--end",
-    measureMark: "list:re-render",
+    startMark: "reatom:list:update--start",
+    endMark: "reatom:list:update--end",
+    measureMark: "reatom:list:re-render",
   });
   const size = useCollectionSize();
   const onOpenSocket = useCallback(

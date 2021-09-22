@@ -3,26 +3,26 @@ import { Socket } from "socket.io-client";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import {
-  $matrixStore,
+  matrixStore,
   MatrixElem,
-  setMatrix$,
-  updateMatrix$,
+  setMatrix,
+  updateMatrix,
 } from "../store/matrixStore";
-import { useStore } from "effector-react";
+import { useStore } from "nanostores/react";
 import { useMeasureMarks } from "use-measure-marks";
 import { useCollectionSize } from "../../../hooks/useRouteParams";
 import { Matrix } from "../../../components/Matrix";
 
 const Pixel: FC<{
   store: MatrixElem;
-}> = ({ store: { pixel } }) => {
-  const { backgroundColor } = useStore(pixel);
+}> = ({ store }) => {
+  const { backgroundColor } = useStore(store);
 
   return <div style={{ width: 1, height: 1, backgroundColor }} />;
 };
-export const MatrixEffector: FC = () => {
+export const MatrixNanostores: FC = () => {
   const setMeasure = useContext(MeasureResultContext)[1];
-  const matrix = useStore($matrixStore);
+  const matrix = useStore(matrixStore);
 
   const measureProps = useMemo(
     () => ({
@@ -44,14 +44,14 @@ export const MatrixEffector: FC = () => {
   const listeners = useMemo(
     () => ({
       "matrix:value": ([value, size]: [string, number]) => {
-        setMatrix$({ backgroundColor: value, size });
+        setMatrix({ backgroundColor: value, size });
       },
       "matrix:update": (value: {
         position: [number, number];
         backgroundColor: string;
       }) => {
         startMark();
-        updateMatrix$(value);
+        updateMatrix(value);
         endMark();
       },
     }),

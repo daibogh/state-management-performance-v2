@@ -25,6 +25,9 @@ export const listSlice = createSlice({
     backgroundOperation: (state) => {
       state.otherList.push(0);
     },
+    clearBackground: (state) => {
+      state.otherList = [];
+    },
   },
 });
 
@@ -35,6 +38,7 @@ export const {
   stop: stopFetching,
   startWithBackground,
   backgroundOperation,
+  clearBackground,
 } = listSlice.actions;
 
 export default listSlice.reducer;

@@ -4,39 +4,54 @@ import { SocketConnectionProvider } from "./hooks/useSocketConnection";
 import { Layout } from "./containers/Layout";
 import { EXPERIMENT_PATH, EXPERIMENT_PATH_STRICT } from "./constants/routes";
 import { generateExperimentPathWithFramework } from "./utils/generateExperimentPathWithFramework";
-import { ExperimentRedux } from "./containers/ExperimentRedux";
-import { ExperimentMobx } from "./containers/ExperimentMobx";
-import { ExperimentReatom } from "./containers/ExperimentReatom";
 import { MeasureResultProvider } from "./hooks/useMeasureResult";
-import { ExperimentEffector } from "./containers/ExperimentEffector";
-import {
-  ExperimentHooksRef,
-  ExperimentHooksState,
-} from "./containers/ExperimentHooks";
+import { getExperimentWrapper } from "./containers/ExperimentWrapper/ExpperimentWrapper";
+import { ListRedux } from "./containers/ExperimentRedux/containers/ListRedux";
+import { MatrixRedux } from "./containers/ExperimentRedux/containers/MatrixRedux";
+import { ReduxProvider } from "./containers/ExperimentRedux/containers/ReduxProvider";
+import { ListMobx } from "./containers/ExperimentMobx/containers/ListMobx";
+import { MatrixMobx } from "./containers/ExperimentMobx/containers/MatrixMobx";
+import { MobxProvider } from "./containers/ExperimentMobx/containers/MobxProvider";
+import { ListReatom } from "./containers/ExperimentReatom/containers/ListReatom";
+import { MatrixReatom } from "./containers/ExperimentReatom/containers/MatrixReatom";
+import { ReatomProvider } from "./containers/ExperimentReatom/containers/ReatomProvider";
+import { ListEffector } from "./containers/ExperimentEffector/containers/ListEffector";
+import { MatrixEffector } from "./containers/ExperimentEffector/containers/MatrixEffector";
+import { ListHooks } from "./containers/ExperimentHooks/containers/ListHooks";
+import { MatrixHooks } from "./containers/ExperimentHooks/containers/MatrixHooks";
+import { ListNanostores } from "./containers/ExperimentNanostores/containers/ListNanostores";
+import { MatrixNanostores } from "./containers/ExperimentNanostores/containers/MatrixNanostores";
 const mappedFrameworkRoutes = [
   {
     path: generateExperimentPathWithFramework("redux"),
-    Component: ExperimentRedux,
+    Component: getExperimentWrapper(ListRedux, MatrixRedux, ReduxProvider),
   },
   {
     path: generateExperimentPathWithFramework("mobx"),
-    Component: ExperimentMobx,
+    Component: getExperimentWrapper(ListMobx, MatrixMobx, MobxProvider),
   },
   {
     path: generateExperimentPathWithFramework("reatom"),
-    Component: ExperimentReatom,
+    Component: getExperimentWrapper(ListReatom, MatrixReatom, ReatomProvider),
   },
   {
     path: generateExperimentPathWithFramework("effector"),
-    Component: ExperimentEffector,
+    Component: getExperimentWrapper(ListEffector, MatrixEffector),
+  },
+  {
+    path: generateExperimentPathWithFramework("nanostores"),
+    Component: getExperimentWrapper(ListNanostores, MatrixNanostores),
   },
   {
     path: generateExperimentPathWithFramework("react_state"),
-    Component: ExperimentHooksState,
+    Component: getExperimentWrapper(ListHooks, MatrixHooks),
   },
   {
     path: generateExperimentPathWithFramework("react_ref"),
-    Component: ExperimentHooksRef,
+    Component: getExperimentWrapper(
+      () => <ListHooks isRef />,
+      () => <MatrixHooks isRef />
+    ),
   },
 ];
 function App() {

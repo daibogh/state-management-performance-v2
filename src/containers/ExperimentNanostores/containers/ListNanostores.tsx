@@ -1,46 +1,44 @@
 import React, { useCallback, useContext, useEffect, useMemo } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks";
+import { useStore } from "nanostores/react";
 import {
-  backgroundOperation,
-  clearBackground,
+  listStore,
+  backgroundAction,
   setList,
   startWithBackground,
   updateList,
-} from "../store/slices/listSlice";
+} from "../store/listStore";
 import { Socket } from "socket.io-client";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
-import { List } from "../../../components/List";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
+import { List } from "../../../components/List";
 import { useMeasureMarks } from "use-measure-marks";
 import {
   useCollectionSize,
   useIsBackgroundOperation,
 } from "../../../hooks/useRouteParams";
 
-export const ListRedux: React.FC = () => {
+export const ListNanostores: React.FC = () => {
+  const items = useStore(listStore);
   const setMeasure = useContext(MeasureResultContext)[1];
-  const items = useAppSelector((store) => store.list.value);
-  const dispatch = useAppDispatch();
   const { startMark, endMark, collectPerformanceList } = useMeasureMarks({
     startMark: "list:update--start",
     endMark: "list:update--end",
     measureMark: "list:re-render",
   });
-  const size = useCollectionSize();
   const isBackgroundOp = useIsBackgroundOperation();
   useEffect(() => {
     let timer: ReturnType<typeof setInterval>;
     if (isBackgroundOp) {
-      dispatch(startWithBackground());
+      startWithBackground();
       timer = setInterval(() => {
-        dispatch(backgroundOperation());
+        backgroundAction();
       }, 500);
     }
     return () => {
       if (timer) clearInterval(timer);
-      dispatch(clearBackground());
     };
-  }, [dispatch, isBackgroundOp]);
+  }, [isBackgroundOp]);
+  const size = useCollectionSize();
   const onOpenSocket = useCallback(
     (socket: Socket) => {
       socket.emit("list:get", size);
@@ -50,26 +48,24 @@ export const ListRedux: React.FC = () => {
   const listeners = useMemo(
     () => ({
       "list:value": (value: number[]) => {
-        dispatch(
-          setList(
-            value.map((item) => ({
-              backgroundColor: `rgb(${Math.floor(
-                Math.random() * 255
-              )},${Math.floor(Math.random() * 255)},${Math.floor(
-                Math.random() * 255
-              )})`,
-              width: item,
-            }))
-          )
+        setList(
+          value.map((item) => ({
+            backgroundColor: `rgb(${Math.floor(
+              Math.random() * 255
+            )},${Math.floor(Math.random() * 255)},${Math.floor(
+              Math.random() * 255
+            )})`,
+            width: item,
+          }))
         );
       },
       "list:update": (value: [number]) => {
         startMark();
-        dispatch(updateList(value));
+        updateList(value);
         endMark();
       },
     }),
-    [dispatch, endMark, startMark]
+    [endMark, startMark]
   );
   const onCloseSocket = useCallback(() => {
     const res = collectPerformanceList();
@@ -82,9 +78,5 @@ export const ListRedux: React.FC = () => {
       listeners,
     },
   });
-  return (
-    <div>
-      <List items={items} />
-    </div>
-  );
+  return <List items={items} />;
 };

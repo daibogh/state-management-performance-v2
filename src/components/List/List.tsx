@@ -1,6 +1,6 @@
 import React from "react";
 type Props = {
-  items: { backgroundColor: string; width: number }[];
+  items: readonly { backgroundColor: string; width: number }[];
 };
 const List: React.FC<Props> = ({ items }) => {
   return (

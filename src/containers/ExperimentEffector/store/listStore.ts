@@ -15,6 +15,6 @@ export const $listStore = createStore<
   );
 export const startWithBackground$ = createEvent();
 export const backgroundEvent$ = createEvent();
-const $otherListStore = createStore<number[]>([])
+export const $otherListStore = createStore<number[]>([])
   .on(backgroundEvent$, (state) => [...state, 0])
   .on(startWithBackground$, () => BIG_COLLECTION);

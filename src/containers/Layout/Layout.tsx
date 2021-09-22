@@ -6,10 +6,12 @@ import { PerformanceChart } from "../../components/PerformanceChart";
 import { MeasureResultContext } from "../../hooks/useMeasureResult";
 import cn from "classnames";
 import { useRouteParams } from "../../hooks/useRouteParams";
+import { Route } from "react-router-dom";
+import { RESULTS_PATH } from "../../constants/routes";
 const Layout: React.FC = ({ children }) => {
   const {
     urlParams: { experimentId },
-    searchParams: { backgroundOp, size },
+    searchParams: { backgroundOp },
   } = useRouteParams();
   const [measure] = useContext(MeasureResultContext);
   return (
@@ -60,9 +62,11 @@ const Layout: React.FC = ({ children }) => {
                       see performance measure
                     </Alert>
                   </Row>
-                  {measure != null && measure.length !== 0 && (
-                    <PerformanceChart data={measure} />
-                  )}
+                  <Route path={RESULTS_PATH}>
+                    {measure != null && measure.length !== 0 && (
+                      <PerformanceChart data={measure} />
+                    )}
+                  </Route>
                 </Container>
               )}
             </Col>

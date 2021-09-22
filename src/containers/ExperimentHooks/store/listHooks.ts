@@ -39,7 +39,7 @@ export const useListRef = () => {
 };
 export const useOtherListState = () => {
   const isBackgroundOp = useIsBackgroundOperation();
-  const [state, setState] = useState<number[]>([]);
+  const setState = useState<number[]>([])[1];
   useEffect(() => {
     let timer: ReturnType<typeof setInterval>;
     if (isBackgroundOp) {
@@ -51,7 +51,7 @@ export const useOtherListState = () => {
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [isBackgroundOp]);
+  }, [isBackgroundOp, setState]);
 };
 export const useOtherListRef = () => {
   const isBackgroundOp = useIsBackgroundOperation();

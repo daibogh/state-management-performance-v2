@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useMemo } from "react";
-import { Button, Col, Container, Dropdown, Form, Row } from "react-bootstrap";
+import { Button, Dropdown, Form } from "react-bootstrap";
 import { useRouteParams } from "../../hooks/useRouteParams";
 import { generateUrlonPath } from "../../utils/generateUrlonPath";
 import { useHistory } from "react-router-dom";
-import { EXPERIMENT_PATH } from "../../constants/routes";
+import { EXPERIMENT_PATH, RESULTS_PATH } from "../../constants/routes";
 import { EXPERIMENT_IDS, FRAMEWORK_IDS } from "../../constants/collections";
 import { SocketConnectionContext } from "../../hooks/useSocketConnection";
 import { DEFAULT_SIZE } from "../../constants/params";
@@ -74,6 +74,24 @@ const Config: React.FC = () => {
     },
     [frameworkId, history, params.searchParams, params.urlParams]
   );
+  const onGoToResults = useCallback(() => {
+    stopSocket();
+    history.push(
+      generateUrlonPath(RESULTS_PATH, {
+        routeParams: params.urlParams,
+        queryParams: params.searchParams,
+      })
+    );
+  }, [history, params, stopSocket]);
+  const onStartExperiment = useCallback(() => {
+    startSocket();
+    history.push(
+      generateUrlonPath(EXPERIMENT_PATH, {
+        routeParams: params.urlParams,
+        queryParams: params.searchParams,
+      })
+    );
+  }, [history, params.searchParams, params.urlParams, startSocket]);
   return (
     <Form>
       <Form.Group className="mb-3">
@@ -142,7 +160,7 @@ const Config: React.FC = () => {
               size="lg"
               variant="primary"
               type="button"
-              onClick={startSocket}
+              onClick={onStartExperiment}
             >
               START
             </Button>
@@ -151,7 +169,7 @@ const Config: React.FC = () => {
               size="lg"
               variant="danger"
               type="button"
-              onClick={stopSocket}
+              onClick={onGoToResults}
             >
               STOP
             </Button>

@@ -3,7 +3,12 @@ import { Socket } from "socket.io-client";
 import { useConfigureExperiment } from "../../../hooks/useConfigureExperiment";
 import { MeasureResultContext } from "../../../hooks/useMeasureResult";
 import { List } from "../../../components/List";
-import { useListRef, useListState, useOtherListRef } from "../store/listHooks";
+import {
+  useListRef,
+  useListState,
+  useOtherListRef,
+  useOtherListState,
+} from "../store/listHooks";
 import { useMeasureMarks } from "use-measure-marks";
 import { useCollectionSize } from "../../../hooks/useRouteParams";
 
@@ -11,7 +16,7 @@ export const ListHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
   const setMeasure = useContext(MeasureResultContext)[1];
   const listState = useListState();
   const listRef = useListRef();
-  const useBackgroundHooks = isRef ? useOtherListRef : useListState;
+  const useBackgroundHooks = isRef ? useOtherListRef : useOtherListState;
   useBackgroundHooks();
   const { updateList, setList, list } = useMemo(() => {
     if (isRef) {

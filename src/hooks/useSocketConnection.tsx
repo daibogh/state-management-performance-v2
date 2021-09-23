@@ -29,6 +29,10 @@ export const useSocketConnection = (
   useEffect(() => {
     if (isActive) {
       socketRef.current = io("http://localhost:5000");
+      socketRef.current?.on("disconnect", () => {
+        setOpened(false);
+        onClose();
+      });
       Object.keys(subscribersRef.current).forEach((event) =>
         socketRef.current?.on(event, subscribersRef.current[event])
       );
@@ -46,7 +50,7 @@ export const useSocketConnection = (
     return () => {
       socketRef.current?.disconnect();
     };
-  }, [isActive, onOpen, onClose]);
+  }, [isActive, onOpen, onClose, setOpened]);
   return useMemo(
     () => ({
       isActive,

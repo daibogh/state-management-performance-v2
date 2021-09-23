@@ -22,7 +22,7 @@ const colorsMap: Record<FrameworkId, string> = {
   nanostores: "#FF1493",
 };
 const CustomPoint: React.FC<ComponentProps<typeof Point>> = (props) => {
-  return <Point {...props} style={{ fill: props.datum.fill }} />;
+  return <Point {...props} size={2} style={{ fill: props.datum.fill }} />;
 };
 const PerformanceChart: FC<{
   data: PerformanceEntry[];
@@ -43,11 +43,10 @@ const PerformanceChart: FC<{
     [data]
   );
   const mergedData = useMemo(() => {
-    const sorted = sortBy(
+    return sortBy(
       uniqBy([...perfBuffer, ...normalizedData], "uid"),
       "startTime"
     );
-    return sorted;
   }, [normalizedData, perfBuffer]);
   const [maxStartTime, maxDuration] = useMemo(
     () => [

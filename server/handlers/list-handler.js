@@ -1,10 +1,19 @@
+const { clearInterval } = require("timers");
 const timers = {};
 module.exports = (io, socket) => {
   // обрабатываем запрос на получение сообщений
   const getList = (size) => {
     const lst = new Array(size).fill(0);
     let idx = 0;
+    let counter = 0;
+    const ITERATIONS_COUNT = 100;
     const timer = setInterval(() => {
+      if (counter >= ITERATIONS_COUNT) {
+        clearInterval(timer);
+        socket.disconnect();
+        return;
+      }
+      counter++;
       const rndIndex = idx % lst.length;
       idx++;
       socket.emit("list:update", [rndIndex]);

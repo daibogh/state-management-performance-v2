@@ -12,7 +12,7 @@ import {
 } from "../../../hooks/useRouteParams";
 const { startWithBackground, backgroundOperation } = otherAtom;
 export const ListReatom: FC = () => {
-  const setMeasure = useContext(MeasureResultContext)[1];
+  const setMeasure = useContext(MeasureResultContext).perfTempState[1];
   const [items, { setList, updateList }] = useAtom(listAtom);
   const startWithBackgroundAction = useAction(startWithBackground);
   const backgroundAction = useAction(backgroundOperation);

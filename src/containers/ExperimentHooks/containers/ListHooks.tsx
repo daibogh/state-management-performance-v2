@@ -13,7 +13,7 @@ import { useMeasureMarks } from "use-measure-marks";
 import { useCollectionSize } from "../../../hooks/useRouteParams";
 
 export const ListHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
-  const setMeasure = useContext(MeasureResultContext)[1];
+  const setMeasure = useContext(MeasureResultContext).perfTempState[1];
   const listState = useListState();
   const listRef = useListRef();
   const useBackgroundHooks = isRef ? useOtherListRef : useOtherListState;
@@ -24,9 +24,9 @@ export const ListHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
     } else return listState;
   }, [isRef, listRef, listState]);
   const { startMark, endMark, collectPerformanceList } = useMeasureMarks({
-    startMark: `${isRef ? "react-ref" : "react-state"}:list:update--start`,
-    endMark: `${isRef ? "react-ref" : "react-state"}:list:update--end`,
-    measureMark: `${isRef ? "react-ref" : "react-state"}:list:re-render`,
+    startMark: `${isRef ? "react_ref" : "react_state"}:list:update--start`,
+    endMark: `${isRef ? "react_ref" : "react_state"}:list:update--end`,
+    measureMark: `${isRef ? "react_ref" : "react_state"}:list:re-render`,
   });
   const size = useCollectionSize();
   const onOpenSocket = useCallback(
@@ -50,7 +50,6 @@ export const ListHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
         );
       },
       "list:update": (value: [number]) => {
-        console.log("here");
         startMark();
         updateList(value);
         endMark();

@@ -13,7 +13,7 @@ const Pixel: FC<{
   return <div style={{ width: 1, height: 1, backgroundColor }} />;
 });
 export const MatrixHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
-  const setMeasure = useContext(MeasureResultContext)[1];
+  const setMeasure = useContext(MeasureResultContext).perfTempState[1];
   const matrixState = useMatrixState();
   const matrixRef = useMatrixRef();
   const { matrix, setMatrix, updateMatrix } = useMemo(
@@ -22,9 +22,9 @@ export const MatrixHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
   );
   const measureProps = useMemo(
     () => ({
-      startMark: `${isRef ? "react-ref" : "react-state"}:matrix:update--start`,
-      endMark: `${isRef ? "react-ref" : "react-state"}:matrix:update--end`,
-      measureMark: `${isRef ? "react-ref" : "react-state"}:matrix:re-render`,
+      startMark: `${isRef ? "react_ref" : "react_state"}:matrix:update--start`,
+      endMark: `${isRef ? "react_ref" : "react_state"}:matrix:update--end`,
+      measureMark: `${isRef ? "react_ref" : "react_state"}:matrix:re-render`,
     }),
     [isRef]
   );

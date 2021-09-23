@@ -18,7 +18,7 @@ import {
   useIsBackgroundOperation,
 } from "../../../hooks/useRouteParams";
 export const ListMobx: FC = observer(() => {
-  const setMeasure = useContext(MeasureResultContext)[1];
+  const setMeasure = useContext(MeasureResultContext).perfTempState[1];
   const {
     list: {
       value: items,

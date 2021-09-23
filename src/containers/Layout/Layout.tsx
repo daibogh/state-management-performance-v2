@@ -13,7 +13,10 @@ const Layout: React.FC = ({ children }) => {
     urlParams: { experimentId },
     searchParams: { backgroundOp },
   } = useRouteParams();
-  const [measure] = useContext(MeasureResultContext);
+  const {
+    perfTempState: [measure],
+    perfBufferState,
+  } = useContext(MeasureResultContext);
   return (
     <Container fluid className={classNames.root}>
       <Row style={{ height: "100%" }}>
@@ -64,7 +67,10 @@ const Layout: React.FC = ({ children }) => {
                   </Row>
                   <Route path={RESULTS_PATH}>
                     {measure != null && measure.length !== 0 && (
-                      <PerformanceChart data={measure} />
+                      <PerformanceChart
+                        data={measure}
+                        perfState={perfBufferState}
+                      />
                     )}
                   </Route>
                 </Container>

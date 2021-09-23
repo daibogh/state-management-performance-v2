@@ -18,7 +18,7 @@ import {
 } from "../../../hooks/useRouteParams";
 
 export const ListRedux: React.FC = () => {
-  const setMeasure = useContext(MeasureResultContext)[1];
+  const setMeasure = useContext(MeasureResultContext).perfTempState[1];
   const items = useAppSelector((store) => store.list.value);
   const dispatch = useAppDispatch();
   const { startMark, endMark, collectPerformanceList } = useMeasureMarks({

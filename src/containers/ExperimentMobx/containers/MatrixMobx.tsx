@@ -28,7 +28,7 @@ const Pixel = observer<{ rowIdx: number; columnIdx: number }>(
   }
 );
 export const MatrixMobx: FC = observer(() => {
-  const setMeasure = useContext(MeasureResultContext)[1];
+  const setMeasure = useContext(MeasureResultContext).perfTempState[1];
   const {
     matrix: { value: matrix, setMatrix, update: updateMatrix },
   } = useContext(StoreContext);

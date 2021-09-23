@@ -20,12 +20,16 @@ const Layout: React.FC = ({ children }) => {
   return (
     <Container fluid className={classNames.root}>
       <Row style={{ height: "100%" }}>
-        <Col xs={2} style={{ backgroundColor: "#f7f7f7" }}>
+        <Col xs={2} style={{ backgroundColor: "#f7f7f7", paddingTop: 15 }}>
           <Config />
         </Col>
         <Col>
           <Row style={{ height: "100%" }}>
-            <Col md={6} className={classNames.alignVertical}>
+            <Col
+              md={6}
+              className={classNames.alignVertical}
+              style={{ paddingTop: 15 }}
+            >
               <Container>
                 <Row style={{ marginBottom: "auto" }}>
                   {experimentId === "list" && (
@@ -55,7 +59,7 @@ const Layout: React.FC = ({ children }) => {
             <Col
               md={6}
               className={cn(classNames.alignVertical)}
-              style={{ backgroundColor: "#f7f7f7" }}
+              style={{ backgroundColor: "#f7f7f7", paddingTop: 15 }}
             >
               {!!experimentId && (
                 <Container>

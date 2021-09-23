@@ -46,13 +46,13 @@ const mappedFrameworkRoutes = [
     path: generateExperimentPathWithFramework("react_state"),
     Component: getExperimentWrapper(ListHooks, MatrixHooks),
   },
-  {
-    path: generateExperimentPathWithFramework("react_ref"),
-    Component: getExperimentWrapper(
-      () => <ListHooks isRef />,
-      () => <MatrixHooks isRef />
-    ),
-  },
+  // {
+  //   path: generateExperimentPathWithFramework("react_ref"),
+  //   Component: getExperimentWrapper(
+  //     () => <ListHooks isRef />,
+  //     () => <MatrixHooks isRef />
+  //   ),
+  // },
 ];
 function App() {
   return (

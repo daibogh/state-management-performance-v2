@@ -16,8 +16,8 @@ const colorsMap: Record<FrameworkId, string> = {
   redux: "red",
   reatom: "blue",
   effector: "green",
-  react_ref: "grey",
-  react_state: "#FF7F50",
+  // react_ref: "grey",
+  react_state: "orange",
   mobx: "#8bc34a",
   nanostores: "#FF1493",
 };
@@ -67,12 +67,17 @@ const PerformanceChart: FC<{
       <Container>
         <Row>
           <Col>
-            <Button onClick={() => setPerfBuffer(mergedData)}>
+            <Button
+              variant="outline-primary"
+              onClick={() => setPerfBuffer(mergedData)}
+            >
               collect data
             </Button>
           </Col>
           <Col>
-            <Button onClick={() => setPerfBuffer([])}>clean data</Button>
+            <Button variant="outline-danger" onClick={() => setPerfBuffer([])}>
+              clean data
+            </Button>
           </Col>
         </Row>
       </Container>

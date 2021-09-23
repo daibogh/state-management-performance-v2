@@ -6,7 +6,7 @@ export const FRAMEWORK_IDS = [
   "effector",
   "nanostores",
   "react_state",
-  "react_ref",
+  // "react_ref",
 ] as const;
 
 export const BIG_COLLECTION = new Array(1000000).fill(0);

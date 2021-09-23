@@ -9,7 +9,7 @@ import { useMeasureMarks } from "use-measure-marks";
 import { useCollectionSize } from "../../../hooks/useRouteParams";
 
 export const MatrixRedux: React.FC = () => {
-  const setMeasure = useContext(MeasureResultContext)[1];
+  const setMeasure = useContext(MeasureResultContext).perfTempState[1];
   const matrix = useAppSelector((store) => store.matrix.value);
   const dispatch = useAppDispatch();
   const measureProps = useMemo(

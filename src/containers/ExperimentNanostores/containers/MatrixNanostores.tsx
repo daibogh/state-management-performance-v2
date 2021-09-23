@@ -21,7 +21,7 @@ const Pixel: FC<{
   return <div style={{ width: 1, height: 1, backgroundColor }} />;
 };
 export const MatrixNanostores: FC = () => {
-  const setMeasure = useContext(MeasureResultContext)[1];
+  const setMeasure = useContext(MeasureResultContext).perfTempState[1];
   const matrix = useStore(matrixStore);
 
   const measureProps = useMemo(

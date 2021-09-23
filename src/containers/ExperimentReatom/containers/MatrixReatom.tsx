@@ -16,7 +16,7 @@ const Pixel: FC<{
   return <div style={{ width: 1, height: 1, backgroundColor }} />;
 };
 export const MatrixReatom: FC = () => {
-  const setMeasure = useContext(MeasureResultContext)[1];
+  const setMeasure = useContext(MeasureResultContext).perfTempState[1];
   const [matrix, { setValue: setMatrix, updatePixel }] = useAtom(matrixAtom);
   const measureProps = useMemo(
     () => ({

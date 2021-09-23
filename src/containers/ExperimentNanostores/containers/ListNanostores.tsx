@@ -19,7 +19,7 @@ import {
 
 export const ListNanostores: React.FC = () => {
   const items = useStore(listStore);
-  const setMeasure = useContext(MeasureResultContext)[1];
+  const setMeasure = useContext(MeasureResultContext).perfTempState[1];
   const { startMark, endMark, collectPerformanceList } = useMeasureMarks({
     startMark: "nanostores:list:update--start",
     endMark: "nanostores:list:update--end",

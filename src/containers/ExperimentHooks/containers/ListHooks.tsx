@@ -59,7 +59,7 @@ export const ListHooks: FC<{ isRef?: boolean }> = ({ isRef }) => {
   );
   const onCloseSocket = useCallback(() => {
     const res = collectPerformanceList();
-    console.log(res);
+
     setMeasure(res);
   }, [collectPerformanceList, setMeasure]);
   useConfigureExperiment({

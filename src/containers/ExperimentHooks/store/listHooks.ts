@@ -45,7 +45,6 @@ export const useOtherListState = () => {
     if (isBackgroundOp) {
       setState(BIG_COLLECTION);
       timer = setInterval(() => {
-        console.log("state other");
 
         setState((arr) => [...arr, 0]);
       }, 500);
@@ -63,7 +62,6 @@ export const useOtherListRef = () => {
     if (isBackgroundOp) {
       list.current = BIG_COLLECTION;
       timer = setInterval(() => {
-        console.log("state ref");
 
         list.current.push(0);
       }, 500);

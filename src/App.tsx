@@ -56,9 +56,9 @@ const mappedFrameworkRoutes = [
 ];
 function App() {
   return (
-    <Router>
-      <SocketConnectionProvider>
-        <MeasureResultProvider>
+    <SocketConnectionProvider>
+      <MeasureResultProvider>
+        <Router>
           <Switch>
             <Route path={[EXPERIMENT_PATH, "/"]}>
               <Layout>
@@ -72,9 +72,9 @@ function App() {
               </Layout>
             </Route>
           </Switch>
-        </MeasureResultProvider>
-      </SocketConnectionProvider>
-    </Router>
+        </Router>
+      </MeasureResultProvider>
+    </SocketConnectionProvider>
   );
 }
 

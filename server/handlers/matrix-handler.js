@@ -9,14 +9,10 @@ module.exports = (io, socket) => {
     let rowIdx = 0;
     let colIdx = 0;
     let counter = 0;
-    const ITERATIONS_COUNT = 400;
     const timer = setInterval(() => {
-      if (counter >= ITERATIONS_COUNT) {
+      if (counter >= 20) {
         clearInterval(timer);
-        socket.disconnect();
-        return;
       }
-      counter++;
       rowIdx = Math.floor(Math.random() * size);
       colIdx = Math.floor(Math.random() * size);
 

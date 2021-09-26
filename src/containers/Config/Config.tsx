@@ -118,7 +118,7 @@ const Config: React.FC = () => {
           <Form.Range
             id="collectionSize"
             min={20}
-            max={150}
+            max={400}
             onChange={onRangeChange}
             value={size || DEFAULT_SIZE}
           />

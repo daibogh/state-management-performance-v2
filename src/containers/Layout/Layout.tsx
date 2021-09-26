@@ -8,7 +8,6 @@ import cn from "classnames";
 import { useRouteParams } from "../../hooks/useRouteParams";
 import { Route } from "react-router-dom";
 import { RESULTS_PATH } from "../../constants/routes";
-import { SocketConnectionContext } from "../../hooks/useSocketConnection";
 const Layout: React.FC = ({ children }) => {
   const {
     urlParams: { experimentId },
@@ -18,7 +17,6 @@ const Layout: React.FC = ({ children }) => {
     perfTempState: [measure],
     perfBufferState,
   } = useContext(MeasureResultContext);
-  const { isActive } = useContext(SocketConnectionContext);
   return (
     <Container fluid className={classNames.root}>
       <Row style={{ height: "100%" }}>
@@ -71,12 +69,14 @@ const Layout: React.FC = ({ children }) => {
                       see performance measure
                     </Alert>
                   </Row>
-                  {measure != null && measure.length !== 0 && !isActive && (
-                    <PerformanceChart
-                      data={measure}
-                      perfState={perfBufferState}
-                    />
-                  )}
+                  <Route path={RESULTS_PATH}>
+                    {measure != null && measure.length !== 0 && (
+                      <PerformanceChart
+                        data={measure}
+                        perfState={perfBufferState}
+                      />
+                    )}
+                  </Route>
                 </Container>
               )}
             </Col>

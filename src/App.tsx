@@ -21,6 +21,7 @@ import { ListHooks } from "./containers/ExperimentHooks/containers/ListHooks";
 import { MatrixHooks } from "./containers/ExperimentHooks/containers/MatrixHooks";
 import { ListNanostores } from "./containers/ExperimentNanostores/containers/ListNanostores";
 import { MatrixNanostores } from "./containers/ExperimentNanostores/containers/MatrixNanostores";
+import ResultsConslusion from "./containers/results-conclusion/ResultsConslusion";
 const mappedFrameworkRoutes = [
   {
     path: generateExperimentPathWithFramework("redux"),
@@ -60,6 +61,9 @@ function App() {
       <MeasureResultProvider>
         <Router>
           <Switch>
+            <Route path={"/conclusion"}>
+              <ResultsConslusion />
+            </Route>
             <Route path={[EXPERIMENT_PATH, "/"]}>
               <Layout>
                 <Switch>
